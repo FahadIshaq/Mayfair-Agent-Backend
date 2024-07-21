@@ -5,30 +5,17 @@ import { Separator } from "@/components/ui/separator";
 import React, { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import Input from "@/components/ui/Input";
-import {
-  ChevronDown,
-  ChevronUp,
-  Delete,
-  DeleteIcon,
-  Trash2,
-} from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { InputTags } from "@/components/ui/inputTags";
-import ImageUpload from "@/components/ui/imageUpload";
 import PropertyAddress from "./PropertyAddress";
 import PropertyDetails from "./propertyDetails";
 import Amenties from "./Amenties";
@@ -38,7 +25,6 @@ import SpecialLocations from "./SpecialLocations";
 import Locations from "./Locations";
 import ImagesUpload from "./ImagesUpload";
 import Facts from "./Facts";
-import CommericalDetails from "./CommericalDetails";
 import PropertyChoice from "./PropertyChoice";
 import ResidentialPropertyTypes from "./ResidentialPropertyTypes";
 import CommericalPropertyTypes from "./CommericalPropertyTypes";
@@ -77,8 +63,8 @@ const formSchema = z.object({
     ])
     .optional(),
   residentialPropertyDetails: z.object({
-    bedrooms: z.number().positive().int().optional(),
-    bathrooms: z.number().positive().int().optional(),
+    bedrooms: z.string(),
+    bathrooms: z.string(),
     floorAreaInfo: z.array(
       z.object({
         description: z.string(),
@@ -110,8 +96,8 @@ const formSchema = z.object({
     sizeInSqft: z.string(),
     startSize: z.string(),
     endSize: z.string(),
-    desksStart: z.string(),
-    desksEnd: z.string(),
+    desksMin: z.number().positive().int().optional(),
+    desksMax: z.number().positive().int().optional(),
     propertyLocation: z.string(),
   }),
   amenties: z.array(z.string()),
@@ -152,17 +138,6 @@ const formSchema = z.object({
     title: z.string(),
     description: z.string(),
   }),
-  commericalDetails: z.object({
-    availableAs: z.string(),
-    rent: z.object({
-      lower: z.string(),
-      upper: z.string(),
-      type: z.string(),
-    }),
-    propertyTypes: z.array(z.string()),
-    floorArea: z.string(),
-    siteArea: z.string(),
-  }),
   images: z.array(BufferSchema),
   status: z.enum(["draft", "published"]),
 });
@@ -176,8 +151,8 @@ const AddNewProperty = () => {
       propertyOption: "buy",
       residentialSubType: undefined,
       residentialPropertyDetails: {
-        bedrooms: undefined,
-        bathrooms: undefined,
+        bedrooms: "",
+        bathrooms: "",
         floorAreaInfo: [
           {
             description: "",
@@ -199,8 +174,8 @@ const AddNewProperty = () => {
         sizeInSqft: "",
         startSize: "",
         endSize: "",
-        desksStart: "",
-        desksEnd: "",
+        desksMin: undefined,
+        desksMax: undefined,
         propertyLocation: "",
       },
       amenties: [],
@@ -240,17 +215,6 @@ const AddNewProperty = () => {
       specialOffers: {
         title: "",
         description: "",
-      },
-      commericalDetails: {
-        availableAs: "",
-        rent: {
-          lower: "",
-          upper: "",
-          type: "",
-        },
-        propertyTypes: [],
-        floorArea: "",
-        siteArea: "",
       },
       images: [],
       status: "draft",
@@ -313,8 +277,6 @@ const AddNewProperty = () => {
           <SpecialLocations form={form} />
 
           <ImagesUpload form={form} />
-
-          <CommericalDetails form={form} />
 
           <div className="flex justify-end">
             <Button

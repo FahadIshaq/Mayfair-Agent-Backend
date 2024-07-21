@@ -26,7 +26,10 @@ const PrivateOffice = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowPrivateOffice(!showPrivateOffice)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowPrivateOffice(!showPrivateOffice);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">
           Private Office

@@ -36,10 +36,15 @@ const ResidentialPropertyDetails = ({ form }: { form: any }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 overflow-auto">
+      {" "}
+      {/* Ensure overflow is handled */}
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowDetails(!showDetails)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowDetails(!showDetails);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">
           Residential Property Details
@@ -54,33 +59,27 @@ const ResidentialPropertyDetails = ({ form }: { form: any }) => {
       </div>
       <Separator />
       {showDetails && (
-        <div className="space-y-4 ml-4">
+        <div className="space-y-4 ml-4 overflow-y-auto">
+          {" "}
+          {/* Adjust for content overflow */}
           <div className="space-y-4">
             <FormControl>
               <Input
                 label="Bedrooms"
                 placeholder="Number of Bedrooms"
-                type="number"
-                {...form.register("residentialPropertyDetails.bedrooms", {
-                  valueAsNumber: true, // Ensures the value is parsed as a number
-                })}
+                {...form.register("residentialPropertyDetails.bedrooms")}
               />
             </FormControl>
           </div>
-
           <div className="space-y-4">
             <FormControl>
               <Input
                 label="Bathrooms"
                 placeholder="Number of Bathrooms"
-                type="number"
-                {...form.register("residentialPropertyDetails.bathrooms", {
-                  valueAsNumber: true, // Ensures the value is parsed as a number
-                })}
+                {...form.register("residentialPropertyDetails.bathrooms")}
               />
             </FormControl>
           </div>
-
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <FormLabel className="text-base">

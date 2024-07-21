@@ -38,7 +38,10 @@ const Locations = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowLocations(!showLocations)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowLocations(!showLocations);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">Locations</FormLabel>
         <button type="button" className="focus:outline-none">

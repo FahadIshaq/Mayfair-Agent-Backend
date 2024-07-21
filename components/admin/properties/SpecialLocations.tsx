@@ -21,7 +21,10 @@ const SpecialLocations = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowSpecialOffers(!showSpecialOffers)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowSpecialOffers(!showSpecialOffers);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">
           Special Offers

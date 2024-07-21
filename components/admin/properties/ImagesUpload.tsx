@@ -16,7 +16,10 @@ const ImagesUpload = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowUpload(!showUpload)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowUpload(!showUpload);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">
           Upload Images

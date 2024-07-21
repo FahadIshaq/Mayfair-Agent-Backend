@@ -54,9 +54,17 @@ const Amenties = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowAmenties(!showAmenties)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowAmenties(!showAmenties);
+        }}
       >
-        <FormLabel className="text-base cursor-pointer">Amenties</FormLabel>
+        <FormLabel className="text-base cursor-pointer">
+          {" "}
+          {form.watch("type") === "commerical"
+            ? "Commerical Aminities"
+            : "Residential Aminities"}
+        </FormLabel>
         <button type="button" className="focus:outline-none">
           {showAmenties ? (
             <ChevronUp className="w-6 h-6 text-gray-600" />

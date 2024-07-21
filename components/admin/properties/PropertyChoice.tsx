@@ -11,21 +11,21 @@ const PropertyChoice = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <FormField
         control={form.control}
-        name={`type`}
+        name="type"
         render={({ field }) => (
           <FormItem className="space-y-3">
             <FormLabel>Property Type</FormLabel>
             <FormControl>
               <RadioGroup
+                value={field.value} // Change defaultValue to value
                 onValueChange={field.onChange}
-                defaultValue={field.value}
                 className="flex flex-row gap-10"
               >
                 <FormItem className="flex items-center space-x-3 space-y-0">
                   <FormControl>
                     <RadioGroupItem value="commerical" />
                   </FormControl>
-                  <FormLabel className="font-normal">Commerical</FormLabel>
+                  <FormLabel className="font-normal">Commercial</FormLabel>
                 </FormItem>
                 <FormItem className="flex items-center space-x-3 space-y-0">
                   <FormControl>

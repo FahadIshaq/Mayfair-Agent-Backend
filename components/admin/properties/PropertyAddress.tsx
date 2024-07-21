@@ -13,7 +13,10 @@ const PropertyAddress = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowPropertyAddress(!showPropertyAddress)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowPropertyAddress(!showPropertyAddress);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">
           Property Address

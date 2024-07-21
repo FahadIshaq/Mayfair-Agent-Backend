@@ -13,7 +13,10 @@ const PropertyDetails = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowPropertyDetails(!showPropertyDetails)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowPropertyDetails(!showPropertyDetails);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">
           Property Details
@@ -50,20 +53,33 @@ const PropertyDetails = ({ form }: { form: any }) => {
               {...form.register("propertyDetails.endSize")}
             />
           </FormControl>
-          <FormControl>
-            <Input
-              label="Desks Start"
-              placeholder="Desks Start"
-              {...form.register("propertyDetails.desksStart")}
-            />
-          </FormControl>
-          <FormControl>
-            <Input
-              label="Desks End"
-              placeholder="Desks End"
-              {...form.register("propertyDetails.desksEnd")}
-            />
-          </FormControl>
+          {form.watch("type") === "commerical" &&
+            form.watch("commericalSubType") === "office" && (
+              <>
+                <FormControl>
+                  <Input
+                    label="Minimum Desks"
+                    placeholder={1}
+                    defaultValue={1}
+                    type="number"
+                    {...form.register("propertyDetails.desksMin", {
+                      valueAsNumber: true,
+                    })}
+                  />
+                </FormControl>
+                <FormControl>
+                  <Input
+                    label="Maximum Desks"
+                    placeholder={5}
+                    defaultValue={1}
+                    type="number"
+                    {...form.register("propertyDetails.desksMax", {
+                      valueAsNumber: true,
+                    })}
+                  />
+                </FormControl>
+              </>
+            )}
           <FormControl>
             <Input
               label="Property Location"

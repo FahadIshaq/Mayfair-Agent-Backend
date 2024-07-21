@@ -22,7 +22,10 @@ const PropertyDescription = ({ form }: { form: any }) => {
       <div className="space-y-4">
         <div
           className="flex items-center justify-between cursor-pointer"
-          onClick={() => setShowDescription(!showDescription)}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowDescription(!showDescription);
+          }}
         >
           <FormLabel className="text-base cursor-pointer">
             Property Description

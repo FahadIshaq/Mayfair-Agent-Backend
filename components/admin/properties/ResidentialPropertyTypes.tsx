@@ -84,7 +84,10 @@ const ResidentialPropertyTypes = ({ form }: { form: any }) => {
     <div className="space-y-4">
       <div
         className="flex items-center justify-between cursor-pointer"
-        onClick={() => setShowPropertyTypes(!showPropertyTypes)}
+        onClick={(e) => {
+          e.preventDefault();
+          setShowPropertyTypes(!showPropertyTypes);
+        }}
       >
         <FormLabel className="text-base cursor-pointer">
           Residential Property SubType

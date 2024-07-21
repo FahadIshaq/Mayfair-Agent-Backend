@@ -19,7 +19,10 @@ const Facts = ({ form }: { form: any }) => {
     <>
       <div className="space-y-4">
         <div
-          onClick={() => setShowFacts(!showFacts)}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowFacts(!showFacts);
+          }}
           className="flex items-center justify-between cursor-pointer"
         >
           <FormLabel className="text-base cursor-pointer">Facts</FormLabel>
