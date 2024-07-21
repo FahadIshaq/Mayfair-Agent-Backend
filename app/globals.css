@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  box-sizing: border-box !important;
+}
+/*========== SCROLL BAR ==========*/
+::-webkit-scrollbar {
+    width: 0.6rem;
+    background-color: #ededed;
+    border-radius: 0.5rem;
+    animation: fadeIn 0.2s ease-in-out;
+    smooth-scrolling: auto;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #999999;
+    border-radius: 0.5rem;
+    animation: fadeIn 0.2s ease-in-out;
+    smooth-scrolling: auto;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #b7b7b7;
+    animation: fadeIn 0.2s ease-in-out;
+    smooth-scrolling: auto;
+  }
+ 

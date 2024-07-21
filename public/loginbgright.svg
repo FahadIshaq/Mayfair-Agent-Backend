@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="959" height="693" viewBox="0 0 959 693">
+        <defs>
+          <clipPath id="clip-path">
+            <rect id="Rectangle_932" data-name="Rectangle 932" width="959" height="693" transform="translate(9590.154 -23411)" fill="#cc0606" opacity="0.43" />
+          </clipPath>
+        </defs>
+        <g id="login-right-shape" transform="translate(-9590.154 23411)" clip-path="url(#clip-path)">
+          <ellipse id="Ellipse_14" data-name="Ellipse 14" cx="668.601" cy="534.002" rx="668.601" ry="534.002" transform="translate(9573.154 -23764.344) rotate(-2)" fill="#e8f4fc" opacity="0.6" />
+          <ellipse id="Ellipse_26" data-name="Ellipse 26" cx="668.601" cy="534.002" rx="668.601" ry="534.002" transform="translate(9686.982 -23893.354) rotate(-2)" fill="#e8f4fc" />
+        </g>
+      </svg>

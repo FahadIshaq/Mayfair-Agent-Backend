@@ -1,0 +1,55 @@
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import ImageUpload from "@/components/ui/imageUpload";
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+
+const ImagesUpload = ({ form }: { form: any }) => {
+  const [showUpload, setShowUpload] = useState(false);
+  return (
+    <div className="space-y-4">
+      <div
+        className="flex items-center justify-between cursor-pointer"
+        onClick={() => setShowUpload(!showUpload)}
+      >
+        <FormLabel className="text-base cursor-pointer">
+          Upload Images
+        </FormLabel>
+        <button type="button" className="focus:outline-none">
+          {showUpload ? (
+            <ChevronUp className="w-6 h-6 text-gray-600" />
+          ) : (
+            <ChevronDown className="w-6 h-6 text-gray-600" />
+          )}
+        </button>
+      </div>
+      <Separator />
+      {showUpload && (
+        <div className="ml-4">
+          <FormField
+            name="images"
+            control={form.control}
+            defaultValue={[]}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <ImageUpload
+                    fileBuffers={field.value}
+                    setFileBuffers={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ImagesUpload;
