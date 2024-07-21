@@ -17,9 +17,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const formSchema = z.object({
   role: z.enum(["Landlord", "Tenant"]),

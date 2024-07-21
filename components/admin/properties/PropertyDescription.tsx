@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   FormControl,
@@ -6,10 +7,12 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const PropertyDescription = ({ form }: { form: any }) => {
   const [showDescription, setShowDescription] = useState(false);

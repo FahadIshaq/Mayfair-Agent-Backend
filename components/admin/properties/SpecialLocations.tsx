@@ -1,3 +1,4 @@
+"use client";
 import {
   FormControl,
   FormField,
@@ -9,8 +10,10 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Input from "@/components/ui/Input";
 import "react-quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
 import { Separator } from "@/components/ui/separator";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const SpecialLocations = ({ form }: { form: any }) => {
   const [showSpecialOffers, setShowSpecialOffers] = useState(false);

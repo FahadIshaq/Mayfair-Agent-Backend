@@ -1,6 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
-import AddNewBlog from "./AddNewBlog";
+import AddNewBlog from "../../../../../components/admin/blog/AddNewBlog";
 
 const page = () => {
   return (

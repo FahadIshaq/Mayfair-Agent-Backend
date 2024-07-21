@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import { EyeIcon, EyeOff } from "lucide-react";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   login?: string;
 }

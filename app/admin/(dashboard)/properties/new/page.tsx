@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import AddNewProperty from "./AddNewProperty";
+import AddNewProperty from "../../../../../components/admin/properties/AddNewProperty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const NewProperty = () => {

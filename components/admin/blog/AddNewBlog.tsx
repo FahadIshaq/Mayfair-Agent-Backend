@@ -1,5 +1,4 @@
 "use client";
-
 import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,11 +16,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import FeaturedImageUploader from "./FeatureImageUploader";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Categories from "./Categories";
+import FeaturedImageUploader from "./FeatureImageUploader";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),

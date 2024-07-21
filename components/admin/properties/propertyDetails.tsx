@@ -1,3 +1,4 @@
+"use client";
 import { FormControl, FormLabel } from "@/components/ui/form";
 import { useState } from "react";
 
