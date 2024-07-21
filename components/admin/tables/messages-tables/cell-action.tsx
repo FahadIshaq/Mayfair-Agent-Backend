@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Blog } from "@/constants/data";
+import { Messages } from "@/constants/data";
 import {
   CheckCheck,
   Edit,
@@ -30,7 +30,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 interface CellActionProps {
-  data: Blog;
+  data: Messages;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
