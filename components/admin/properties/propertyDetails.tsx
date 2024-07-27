@@ -36,7 +36,7 @@ const PropertyDetails = ({ form }: { form: any }) => {
             <Input
               label="Size in Sqft"
               placeholder="Size in Sqft"
-              {...form.register("propertyDetails.sizeInSqft")}
+              {...form.register("propertyDetails.squareft")}
             />
           </FormControl>
           <FormControl>

@@ -16,8 +16,18 @@ import {
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export function Modal() {
+interface ModalProps {
+  onSubmit: (data: string) => void;
+}
+
+export function Modal({ onSubmit }: ModalProps) {
   const [name, setName] = useState("");
+
+  const handleSubmit = () => {
+    onSubmit(name);
+    setName("");
+  }
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -45,7 +55,7 @@ export function Modal() {
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" onClick={handleSubmit}>Save changes</Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

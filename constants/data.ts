@@ -27,14 +27,13 @@ export type Messages = {
 };
 
 export type Amenities = {
-  id: number;
+  _id: string;
   name: string;
 };
 
 export type Property = {
-  id: number;
+  _id: string;
   type: string;
-  name: string;
 };
 
 export type Locations = {
@@ -76,95 +75,23 @@ export const blogs: Blog[] = [
 ];
 
 export const amenities: Amenities[] = [
-  { id: 1, name: "Swimming Pool" },
-  { id: 2, name: "Gymnasium" },
-  { id: 3, name: "Parking Lot" },
-  { id: 4, name: "Playground" },
-  { id: 5, name: "Clubhouse" },
-  { id: 6, name: "Tennis Court" },
-  { id: 7, name: "Security Patrol" },
+  { _id: "1", name: "Swimming Pool" },
+  { _id: "2", name: "Gymnasium" },
+  { _id: "3", name: "Parking Lot" },
+  { _id: "4", name: "Playground" },
+  { _id: "5", name: "Clubhouse" },
+  { _id: "6", name: "Tennis Court" },
+  { _id: "7", name: "Security Patrol" },
 ];
 
 export const propertiesSubTypes: Property[] = [
   {
-    id: 1,
-    name: "Alternative",
+    _id: "jnelfl",
     type: "Residential",
   },
   {
-    id: 2,
-    name: "Apartment",
-    type: "Residential",
-  },
-  {
-    id: 3,
-    name: "Cottage",
-    type: "Residential",
-  },
-  {
-    id: 4,
-    name: "Development",
-    type: "Residential",
-  },
-  {
-    id: 5,
-    name: "Duplex",
-    type: "Residential",
-  },
-  {
-    id: 6,
-    name: "Flat",
-    type: "Residential",
-  },
-  {
-    id: 7,
-    name: "Hotel",
-    type: "Residential",
-  },
-  {
-    id: 8,
-    name: "House",
-    type: "Residential",
-  },
-  {
-    id: 9,
-    name: "Land",
-    type: "Residential",
-  },
-  {
-    id: 10,
-    name: "Mews",
-    type: "Residential",
-  },
-  {
-    id: 11,
-    name: "New Development",
-    type: "Residential",
-  },
-  {
-    id: 12,
-    name: "Penthouse",
-    type: "Residential",
-  },
-  {
-    id: 13,
-    name: "Residential Building",
-    type: "Residential",
-  },
-  {
-    id: 14,
-    name: "Triplex",
-    type: "Residential",
-  },
-  {
-    id: 15,
-    name: "Warehouse Conversion",
-    type: "Residential",
-  },
-  {
-    id: 16,
-    name: "Other",
-    type: "Residential",
+    _id: "efnwknf",
+    type: "Commercial",
   },
 ];
 

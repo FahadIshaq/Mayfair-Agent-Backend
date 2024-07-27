@@ -22,9 +22,13 @@ import {
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export function Modal() {
+interface ModalProps {
+  onSubmit: (data: { type: string }) => void;
+}
+
+export function Modal({ onSubmit }: ModalProps) {
   const [data, setData] = useState({
-    name: "",
+    // name: "",
     type: "",
   });
 
@@ -43,7 +47,8 @@ export function Modal() {
   };
 
   const handleSubmit = () => {
-    console.log(data);
+    onSubmit(data);
+    setData({ type: "" });
   };
 
   return (
@@ -70,7 +75,7 @@ export function Modal() {
               </SelectContent>
             </Select>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          {/* <div className="grid grid-cols-4 items-center gap-4">
             <Input
               label="Name"
               id="name"
@@ -79,7 +84,7 @@ export function Modal() {
               onChange={handleChange}
               className="col-span-4"
             />
-          </div>
+          </div> */}
         </div>
         <SheetFooter>
           <SheetClose asChild>

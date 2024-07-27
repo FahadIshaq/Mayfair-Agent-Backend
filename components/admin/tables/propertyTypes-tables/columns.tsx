@@ -6,8 +6,8 @@ import { Property } from "@/constants/data";
 
 export const columns: ColumnDef<Property>[] = [
   {
-    accessorKey: "name",
-    header: "NAME",
+    accessorKey: "type",
+    header: "TYPE",
   },
   {
     id: "actions",

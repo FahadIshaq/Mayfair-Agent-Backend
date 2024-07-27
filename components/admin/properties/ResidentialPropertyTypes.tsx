@@ -104,7 +104,7 @@ const ResidentialPropertyTypes = ({ form }: { form: any }) => {
       {showPropertyTypes && (
         <FormField
           control={form.control}
-          name="residentialSubType"
+          name="propertySubType"
           render={({ field }) => (
             <FormItem className="space-y-3">
               <FormControl>

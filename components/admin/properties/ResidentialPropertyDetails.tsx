@@ -88,7 +88,7 @@ const ResidentialPropertyDetails = ({ form }: { form: any }) => {
             </div>
             <div className="border-2 border-gray-100 p-2">
               {form
-                .getValues("residentialPropertyDetails.floorAreaInfo")
+                .getValues("residentialPropertyDetails.floorArea")
                 .map((_: any, index: number) => (
                   <div key={index}>
                     <div className="flex justify-end">
@@ -105,7 +105,7 @@ const ResidentialPropertyDetails = ({ form }: { form: any }) => {
                             label="Description"
                             placeholder="site"
                             {...form.register(
-                              `residentialPropertyDetails.floorAreaInfo.${index}.description`
+                              `residentialPropertyDetails.floorArea.${index}.description`
                             )}
                           />
                         </FormControl>
@@ -116,7 +116,7 @@ const ResidentialPropertyDetails = ({ form }: { form: any }) => {
                             label="Size"
                             placeholder="3.44 acres"
                             {...form.register(
-                              `residentialPropertyDetails.floorAreaInfo.${index}.size`
+                              `residentialPropertyDetails.floorArea.${index}.size`
                             )}
                           />
                         </FormControl>
@@ -128,7 +128,7 @@ const ResidentialPropertyDetails = ({ form }: { form: any }) => {
                             label="Status"
                             placeholder="Available"
                             {...form.register(
-                              `residentialPropertyDetails.floorAreaInfo.${index}.status`
+                              `residentialPropertyDetails.floorArea.${index}.status`
                             )}
                           />
                         </FormControl>

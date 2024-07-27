@@ -6,6 +6,10 @@ import Providers from "@/store/provider";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
+
+import { ToastContainer, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export const metadata: Metadata = {
   title: "VictorHarris",
   description: "Office Space to Rent in London, UK via Victor Harris",
@@ -26,6 +30,11 @@ export default function RootLayout({
           {/* <Footer /> */}
           <Toaster />
         </Providers>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          transition={Slide}
+        />
       </body>
     </html>
   );

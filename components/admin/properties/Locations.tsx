@@ -24,9 +24,9 @@ const Locations = ({ form }: { form: any }) => {
 
   const handleAddLocation = () => {
     append({
-      locationName: "",
+      name: "",
       distance: "",
-      undergroundOrOverground: "",
+      type: "",
     });
   };
 
@@ -60,7 +60,7 @@ const Locations = ({ form }: { form: any }) => {
               <Input
                 label="Location Iframe"
                 placeholder="Location Iframe"
-                {...form.register("locations.locationIframe")}
+                {...form.register("location.locationIframe")}
               />
             </FormControl>
           </div>
@@ -70,7 +70,7 @@ const Locations = ({ form }: { form: any }) => {
               <Input
                 label="Location Latitude"
                 placeholder="Location Latitude"
-                {...form.register("locations.latitude")}
+                {...form.register("location.latitude")}
               />
             </FormControl>
           </div>
@@ -80,7 +80,7 @@ const Locations = ({ form }: { form: any }) => {
               <Input
                 label="Location Longitude"
                 placeholder="Location Longitude"
-                {...form.register("locations.longitude")}
+                {...form.register("location.longitude")}
               />
             </FormControl>
           </div>
@@ -93,7 +93,7 @@ const Locations = ({ form }: { form: any }) => {
             </div>
             <div className="border-2 border-gray-100 p-2">
               {form
-                .getValues("locations.nearestTransportOption")
+                .getValues("location.transportOptions")
                 .map((_: any, index: number) => (
                   <div key={index}>
                     <div className="flex justify-end">
@@ -109,7 +109,7 @@ const Locations = ({ form }: { form: any }) => {
                             label="Location Name"
                             placeholder="Location Name"
                             {...form.register(
-                              `locations.nearestTransportOption.${index}.locationName`
+                              `location.transportOptions.${index}.name`
                             )}
                           />
                         </FormControl>
@@ -120,14 +120,14 @@ const Locations = ({ form }: { form: any }) => {
                             label="Distance"
                             placeholder="Distance"
                             {...form.register(
-                              `locations.nearestTransportOption.${index}.distance`
+                              `location.transportOptions.${index}.distance`
                             )}
                           />
                         </FormControl>
                       </div>
                       <FormField
                         control={form.control}
-                        name={`locations.nearestTransportOption.${index}.undergroundOrOverground`}
+                        name={`location.transportOptions.${index}.type`}
                         render={({ field }) => (
                           <FormItem className="space-y-3">
                             <FormLabel>Underground or Overground</FormLabel>

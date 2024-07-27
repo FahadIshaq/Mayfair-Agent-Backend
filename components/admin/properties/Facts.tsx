@@ -41,12 +41,12 @@ const Facts = ({ form }: { form: any }) => {
               <Input
                 label="Fact Title"
                 placeholder="Fact Title"
-                {...form.register("facts.factTitle")}
+                {...form.register("facts.title")}
               />
             </FormControl>
             <FormField
               control={form.control}
-              name="facts.factDescription"
+              name="facts.description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Fact Description</FormLabel>

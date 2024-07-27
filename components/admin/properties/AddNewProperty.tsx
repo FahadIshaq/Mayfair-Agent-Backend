@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import Input from "@/components/ui/Input";
 import PropertyAddress from "./PropertyAddress";
-import PropertyDetails from "./propertyDetails";
+import PropertyDetails from "./PropertyDetails";
 import Amenties from "./Amenties";
 import PropertyDescription from "./PropertyDescription";
 import PrivateOffice from "./PrivateOffice";
@@ -31,6 +31,9 @@ import CommericalPropertyTypes from "./CommericalPropertyTypes";
 import ResidentialPropertyDetails from "./ResidentialPropertyDetails";
 import PropertyOption from "./PropertyOption";
 
+import axios from "axios";
+import { toast } from "react-toastify";
+
 const BufferSchema = z.custom<ArrayBuffer>((data) => {
   if (!(data instanceof ArrayBuffer)) {
     throw new Error("Invalid buffer data");
@@ -40,9 +43,9 @@ const BufferSchema = z.custom<ArrayBuffer>((data) => {
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
-  type: z.enum(["commerical", "residential"]),
+  propertyType: z.string(),
   propertyOption: z.enum(["buy", "rent"]),
-  residentialSubType: z
+  propertySubType: z
     .enum([
       "alternative",
       "apartment",
@@ -65,7 +68,7 @@ const formSchema = z.object({
   residentialPropertyDetails: z.object({
     bedrooms: z.string(),
     bathrooms: z.string(),
-    floorAreaInfo: z.array(
+    floorArea: z.array(
       z.object({
         description: z.string(),
         size: z.string(),
@@ -93,7 +96,7 @@ const formSchema = z.object({
     location: z.string(),
   }),
   propertyDetails: z.object({
-    sizeInSqft: z.string(),
+    squareft: z.string(),
     startSize: z.string(),
     endSize: z.string(),
     desksMin: z.number().positive().int().optional(),
@@ -103,18 +106,18 @@ const formSchema = z.object({
   amenties: z.array(z.string()),
   propertyDescription: z.string(),
   facts: z.object({
-    factTitle: z.string(),
-    factDescription: z.string(),
+    title: z.string(),
+    description: z.string(),
   }),
-  locations: z.object({
+  location: z.object({
     locationIframe: z.string(),
     latitude: z.string(),
     longitude: z.string(),
-    nearestTransportOption: z.array(
+    transportOptions: z.array(
       z.object({
-        locationName: z.string(),
+        name: z.string(),
         distance: z.string(),
-        undergroundOrOverground: z.string(),
+        type: z.string(),
       })
     ),
   }),
@@ -139,21 +142,23 @@ const formSchema = z.object({
     description: z.string(),
   }),
   images: z.array(BufferSchema),
-  status: z.enum(["draft", "published"]),
+  propertyStatus: z.enum(["draft", "published"]),
 });
 
 const AddNewProperty = () => {
+  const [propertyTypes, setPropertyTypes] = useState<{ _id: string; type: string }[]>([]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      type: "residential",
+      propertyType: "",
       propertyOption: "buy",
-      residentialSubType: undefined,
+      propertySubType: undefined,
       residentialPropertyDetails: {
         bedrooms: "",
         bathrooms: "",
-        floorAreaInfo: [
+        floorArea: [
           {
             description: "",
             size: "",
@@ -171,7 +176,7 @@ const AddNewProperty = () => {
         location: "",
       },
       propertyDetails: {
-        sizeInSqft: "",
+        squareft: "",
         startSize: "",
         endSize: "",
         desksMin: undefined,
@@ -181,18 +186,18 @@ const AddNewProperty = () => {
       amenties: [],
       propertyDescription: "",
       facts: {
-        factTitle: "",
-        factDescription: "",
+        title: "",
+        description: "",
       },
-      locations: {
+      location: {
         locationIframe: "",
         latitude: "",
         longitude: "",
-        nearestTransportOption: [
+        transportOptions: [
           {
-            locationName: "",
+            name: "",
             distance: "",
-            undergroundOrOverground: "",
+            type: "",
           },
         ],
       },
@@ -217,12 +222,31 @@ const AddNewProperty = () => {
         description: "",
       },
       images: [],
-      status: "draft",
+      propertyStatus: "draft",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const getPropertyTypeNameById = (id: string) => {
+    const propertyType = propertyTypes.find((type) => type._id === id);
+    return propertyType ? propertyType.type : "";
+  };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      console.log(values);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/property`, values, {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`
+        }
+      });
+
+      toast.success("Property added successfully!");
+
+      form.reset(); // Reset form to default values
+    } catch (error) {
+      console.error("An error occurred:", error);
+      toast.error("Failed to add property.");
+    }
   }
 
   return (
@@ -250,20 +274,24 @@ const AddNewProperty = () => {
             )}
           />
 
-          <PropertyChoice form={form} />
+          <PropertyChoice form={form} setPropertyTypes={setPropertyTypes} />
           <PropertyOption form={form} />
-          {form.watch("type") === "residential" && (
-            <>
-              <ResidentialPropertyTypes form={form} />
-              <ResidentialPropertyDetails form={form} />
-            </>
-          )}
 
-          {form.watch("type") === "commerical" && (
-            <CommericalPropertyTypes form={form} />
-          )}
+          {form.watch("propertyType") &&
+            getPropertyTypeNameById(form.watch("propertyType")).startsWith('residential') && (
+              <>
+                <ResidentialPropertyTypes form={form} />
+                <ResidentialPropertyDetails form={form} />
+              </>
+            )}
 
-          {form.watch("type") === "commerical" &&
+          {form.watch("propertyType") &&
+            getPropertyTypeNameById(form.watch("propertyType")).startsWith('commercial') && (
+              <CommericalPropertyTypes form={form} />
+            )}
+
+          {form.watch("propertyType") &&
+            getPropertyTypeNameById(form.watch("propertyType")).startsWith('commercial') &&
             form.watch("commericalSubType") === "office" && (
               <PrivateOffice form={form} />
             )}
@@ -279,11 +307,7 @@ const AddNewProperty = () => {
           <ImagesUpload form={form} />
 
           <div className="flex justify-end">
-            <Button
-              type="button"
-              onClick={() => form.handleSubmit(onSubmit)()}
-              className="w-32"
-            >
+            <Button type="submit" className="w-32">
               Submit
             </Button>
           </div>
