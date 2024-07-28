@@ -13,33 +13,16 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
-const Amenties = ({ form }: { form: any }) => {
+const Amenties = ({ form, filteredProperties, propertySubType }: { form: any; filteredProperties: { _id: string; name: string; amenities: any[] }[], propertySubType: string | undefined }) => {
   const [showAmenties, setShowAmenties] = useState(false);
-  const [amenitiesData, setAmenitiesData] = useState<{ _id: string; name: string }[]>([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [amenities, setAmenities] = useState<{ _id: string; name: string }[]>([]);
 
   useEffect(() => {
-    const fetchAmenities = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/amenities`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
-            },
-          }
-        );
-
-        setAmenitiesData(response.data.properties);
-        setLoading(false);
-      } catch (error) {
-        console.error("An error occurred:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchAmenities();
-  }, []);
+    if (propertySubType) {
+      const selectedProperty = filteredProperties.find(property => property._id === propertySubType);
+      setAmenities(selectedProperty ? selectedProperty.amenities : []);
+    }
+  }, [propertySubType, filteredProperties]);
 
   return (
     <div className="space-y-4">
@@ -52,7 +35,7 @@ const Amenties = ({ form }: { form: any }) => {
       >
         <FormLabel className="text-base cursor-pointer">
           {" "}
-          {form.watch("type") === "commerical"
+          {form.watch("propertyType") === "commercial"
             ? "Commercial Amenities"
             : "Residential Amenities"}
         </FormLabel>
@@ -67,54 +50,50 @@ const Amenties = ({ form }: { form: any }) => {
       <Separator />
       {showAmenties && (
         <div className="ml-4">
-          {loading ? (
-            <div>Loading...</div> 
-          ) : (
-            <FormField
-              control={form.control}
-              name="amenties"
-              render={() => (
-                <FormItem>
-                  {amenitiesData.map((item) => (
-                    <FormField
-                      key={item._id}
-                      control={form.control}
-                      name="amenties"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={item._id}
-                            className="flex flex-row items-start space-x-3 space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(item._id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([
-                                        ...(field.value || []),
-                                        item._id,
-                                      ])
-                                    : field.onChange(
-                                        (field.value || []).filter(
-                                          (value: string) => value !== item._id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="text-sm font-normal">
-                              {item.name}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
-                  ))}
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="amenties"
+            render={() => (
+              <FormItem>
+                {amenities.map((item) => (
+                  <FormField
+                    key={item._id}
+                    control={form.control}
+                    name="amenties"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={item._id}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item._id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([
+                                      ...(field.value || []),
+                                      item._id,
+                                    ])
+                                  : field.onChange(
+                                      (field.value || []).filter(
+                                        (value: string) => value !== item._id
+                                      )
+                                    );
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="text-sm font-normal">
+                            {item.name}
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+              </FormItem>
+            )}
+          />
         </div>
       )}
     </div>

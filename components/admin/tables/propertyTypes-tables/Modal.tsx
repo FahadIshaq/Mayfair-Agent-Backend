@@ -20,17 +20,50 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Checkbox } from "@/components/ui/checkbox";
+
+interface Amenity {
+  _id: string;
+  name: string;
+}
 
 interface ModalProps {
-  onSubmit: (data: { type: string }) => void;
+  onSubmit: (data: { type: string; name: string; amenities: string[] }) => void;
 }
 
 export function Modal({ onSubmit }: ModalProps) {
   const [data, setData] = useState({
-    // name: "",
+    name: "",
     type: "",
+    amenities: [] as string[],
   });
+  const [amenitiesData, setAmenitiesData] = useState<Amenity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAmenities = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/amenities`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+            },
+          }
+        );
+
+        setAmenitiesData(response.data.properties);
+        setLoading(false);
+      } catch (error) {
+        console.error("An error occurred:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchAmenities();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData((prev) => ({
@@ -46,9 +79,18 @@ export function Modal({ onSubmit }: ModalProps) {
     }));
   };
 
+  const handleCheckboxChange = (amenityId: string) => {
+    setData((prev) => ({
+      ...prev,
+      amenities: prev.amenities.includes(amenityId)
+        ? prev.amenities.filter((id) => id !== amenityId)
+        : [...prev.amenities, amenityId],
+    }));
+  };
+
   const handleSubmit = () => {
     onSubmit(data);
-    setData({ type: "" });
+    setData({ type: "", name: "", amenities: [] });
   };
 
   return (
@@ -75,7 +117,7 @@ export function Modal({ onSubmit }: ModalProps) {
               </SelectContent>
             </Select>
           </div>
-          {/* <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4">
             <Input
               label="Name"
               id="name"
@@ -84,7 +126,26 @@ export function Modal({ onSubmit }: ModalProps) {
               onChange={handleChange}
               className="col-span-4"
             />
-          </div> */}
+          </div>
+          <div className="grid gap-4">
+            <label className="text-sm font-medium">Select Amenities</label>
+            {loading ? (
+              <div>Loading...</div>
+            ) : (
+              amenitiesData.map((amenity) => (
+                <div key={amenity._id} className="flex items-center">
+                  <Checkbox
+                    id={amenity._id}
+                    onCheckedChange={() => handleCheckboxChange(amenity._id)}
+                    checked={data.amenities.includes(amenity._id)}
+                  />
+                  <label htmlFor={amenity._id} className="ml-2">
+                    {amenity.name}
+                  </label>
+                </div>
+              ))
+            )}
+          </div>
         </div>
         <SheetFooter>
           <SheetClose asChild>

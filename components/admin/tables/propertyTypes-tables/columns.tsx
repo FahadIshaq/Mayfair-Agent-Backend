@@ -10,6 +10,10 @@ export const columns: ColumnDef<Property>[] = [
     header: "TYPE",
   },
   {
+    accessorKey: "name",
+    header: "NAME",
+  },
+  {
     id: "actions",
     header: "Actions",
     cell: ({ row }) => <CellAction data={row.original} />,

@@ -32,6 +32,7 @@ export const PropertyTypes: React.FC<PropertyTypesProps> = ({ data }) => {
         }
       );
 
+      console.log(response.data.properties);
       setProperties(response.data.properties);
     } catch (error) {
       console.error("An error occurred:", error);

@@ -7,36 +7,17 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
-const PropertyChoice = ({ form, setPropertyTypes }: { form: any, setPropertyTypes: (types: any[]) => void }) => {
-  const [propertyTypes, setLocalPropertyTypes] = useState<{ _id: string; type: string }[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPropertyTypes = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/propertyType`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
-            },
-          }
-        );
-
-        setLocalPropertyTypes(response.data.properties);
-        setPropertyTypes(response.data.properties);
-        setLoading(false);
-      } catch (error) {
-        console.error("An error occurred:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchPropertyTypes();
-  }, [setPropertyTypes]);
+const PropertyChoice = ({
+  form,
+  propertyTypes,
+  loading,
+}: {
+  form: any;
+  propertyTypes: { _id: string; type: string }[];
+  loading: boolean;
+}) => {
+  const uniqueTypes = Array.from(new Set(propertyTypes.map((item) => item.type)));
 
   return (
     <div className="space-y-4">
@@ -55,12 +36,15 @@ const PropertyChoice = ({ form, setPropertyTypes }: { form: any, setPropertyType
                   onValueChange={field.onChange}
                   className="flex flex-row gap-10"
                 >
-                  {propertyTypes.map((item) => (
-                    <FormItem key={item._id} className="flex items-center space-x-3 space-y-0">
+                  {uniqueTypes.map((type) => (
+                    <FormItem
+                      key={type}
+                      className="flex items-center space-x-3 space-y-0"
+                    >
                       <FormControl>
-                        <RadioGroupItem value={item._id} />
+                        <RadioGroupItem value={type} />
                       </FormControl>
-                      <FormLabel className="font-normal">{item.type}</FormLabel>
+                      <FormLabel className="font-normal capitalize">{type}</FormLabel>
                     </FormItem>
                   ))}
                 </RadioGroup>

@@ -36,7 +36,7 @@ const ImagesUpload = ({ form }: { form: any }) => {
       {showUpload && (
         <div className="ml-4">
           <FormField
-            name="images"
+            name="propertyImages"
             control={form.control}
             defaultValue={[]}
             render={({ field }) => (

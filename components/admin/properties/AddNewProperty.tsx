@@ -2,7 +2,7 @@
 
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -45,26 +45,7 @@ const formSchema = z.object({
   title: z.string().min(2).max(50),
   propertyType: z.string(),
   propertyOption: z.enum(["buy", "rent"]),
-  propertySubType: z
-    .enum([
-      "alternative",
-      "apartment",
-      "cottage",
-      "development",
-      "duplex",
-      "flat",
-      "hotel",
-      "house",
-      "land",
-      "news",
-      "newDevelopment",
-      "penthouse",
-      "residentialBuilding",
-      "triplex",
-      "warehouseConversion",
-      "other",
-    ])
-    .optional(),
+  propertySubType: z.string().optional(),
   residentialPropertyDetails: z.object({
     bedrooms: z.string(),
     bathrooms: z.string(),
@@ -76,17 +57,7 @@ const formSchema = z.object({
       })
     ),
   }),
-  commericalSubType: z
-    .enum([
-      "healthCare",
-      "hotel",
-      "office",
-      "retail",
-      "openStorageLand",
-      "shoppingCenter",
-      "other",
-    ])
-    .optional(),
+  commericalSubType: z.string().optional(),
   propertyAddress: z.object({
     buildingNumber: z.string(),
     street: z.string(),
@@ -103,6 +74,7 @@ const formSchema = z.object({
     desksMax: z.number().positive().int().optional(),
     propertyLocation: z.string(),
   }),
+  propertyRent: z.string().optional(),
   amenties: z.array(z.string()),
   propertyDescription: z.string(),
   facts: z.object({
@@ -141,12 +113,15 @@ const formSchema = z.object({
     title: z.string(),
     description: z.string(),
   }),
-  images: z.array(BufferSchema),
+  propertyImages: z.array(BufferSchema),
   propertyStatus: z.enum(["draft", "published"]),
 });
 
 const AddNewProperty = () => {
-  const [propertyTypes, setPropertyTypes] = useState<{ _id: string; type: string }[]>([]);
+  const [propertyTypes, setPropertyTypes] = useState<{ _id: string; type: string; name: string; amenities: any[] }[]>([]);
+  const [filteredProperties, setFilteredProperties] = useState<{ _id: string; name: string; amenities: any[] }[]>([]);
+
+  const [loading, setLoading] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -166,15 +141,6 @@ const AddNewProperty = () => {
           },
         ],
       },
-      commericalSubType: undefined,
-      propertyAddress: {
-        buildingNumber: "",
-        street: "",
-        city: "",
-        state: "",
-        zip: "",
-        location: "",
-      },
       propertyDetails: {
         squareft: "",
         startSize: "",
@@ -183,6 +149,7 @@ const AddNewProperty = () => {
         desksMax: undefined,
         propertyLocation: "",
       },
+      propertyRent: undefined,
       amenties: [],
       propertyDescription: "",
       facts: {
@@ -221,24 +188,73 @@ const AddNewProperty = () => {
         title: "",
         description: "",
       },
-      images: [],
+      propertyImages: [],
       propertyStatus: "draft",
     },
   });
 
-  const getPropertyTypeNameById = (id: string) => {
-    const propertyType = propertyTypes.find((type) => type._id === id);
-    return propertyType ? propertyType.type : "";
-  };
+  useEffect(() => {
+    const fetchPropertyTypes = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/propertyType`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+            },
+          }
+        );
+
+        setPropertyTypes(response.data.properties);
+        setLoading(false);
+      } catch (error) {
+        console.error("An error occurred:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchPropertyTypes();
+  }, []);
+
+  useEffect(() => {
+    const selectedType = form.watch("propertyType");
+    if (selectedType) {
+      const filtered = propertyTypes
+        .filter((property) => property.type === selectedType)
+        .map(({ _id, name, amenities }) => ({ _id, name, amenities }));
+      setFilteredProperties(filtered);
+    }
+  }, [form.watch("propertyType"), propertyTypes]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+
+    // Loop over the values and append them to the FormData object
+    Object.keys(values).forEach(key => {
+      const value = values[key as keyof typeof values];
+
+      if (key === 'propertyImages') {
+        (value as ArrayBuffer[]).forEach((image, index) => {
+          formData.append(`propertyImages[${index}]`, new Blob([image]), `image${index}.jpg`);
+        });
+      } else if (typeof value === 'object' && value !== null) {
+        formData.append(key, JSON.stringify(value));
+      } else {
+        formData.append(key, value as string | Blob);
+      }
+    });
+
     try {
-      console.log(values);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/property`, values, {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/property`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+          },
         }
-      });
+      );
 
       toast.success("Property added successfully!");
 
@@ -274,31 +290,46 @@ const AddNewProperty = () => {
             )}
           />
 
-          <PropertyChoice form={form} setPropertyTypes={setPropertyTypes} />
+          <PropertyChoice
+            form={form}
+            propertyTypes={propertyTypes}
+            loading={loading}
+          />
           <PropertyOption form={form} />
 
           {form.watch("propertyType") &&
-            getPropertyTypeNameById(form.watch("propertyType")).startsWith('residential') && (
+            form.watch("propertyType") === "residential" && (
               <>
-                <ResidentialPropertyTypes form={form} />
+                <ResidentialPropertyTypes form={form} filteredProperties={filteredProperties} />
                 <ResidentialPropertyDetails form={form} />
               </>
             )}
 
           {form.watch("propertyType") &&
-            getPropertyTypeNameById(form.watch("propertyType")).startsWith('commercial') && (
-              <CommericalPropertyTypes form={form} />
-            )}
-
-          {form.watch("propertyType") &&
-            getPropertyTypeNameById(form.watch("propertyType")).startsWith('commercial') &&
-            form.watch("commericalSubType") === "office" && (
-              <PrivateOffice form={form} />
+            form.watch("propertyType") === "commercial" && (
+              <>
+                <CommericalPropertyTypes form={form} filteredProperties={filteredProperties} />
+                {form.watch("commericalSubType") === "office" && <PrivateOffice form={form} />}
+              </>
             )}
 
           <PropertyAddress form={form} />
           <PropertyDetails form={form} />
-          <Amenties form={form} />
+
+          <FormField
+            control={form.control}
+            name="propertyRent"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input type="number" label="Property Rent" placeholder="Property Rent" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Amenties form={form} filteredProperties={filteredProperties} propertySubType={form.watch("propertySubType")} />
           <PropertyDescription form={form} />
           <Facts form={form} />
           <Locations form={form} />

@@ -34,6 +34,7 @@ export type Amenities = {
 export type Property = {
   _id: string;
   type: string;
+  name: string;
 };
 
 export type Locations = {
@@ -88,10 +89,12 @@ export const propertiesSubTypes: Property[] = [
   {
     _id: "jnelfl",
     type: "Residential",
+    name: "test",
   },
   {
     _id: "efnwknf",
     type: "Commercial",
+    name: "test",
   },
 ];
 

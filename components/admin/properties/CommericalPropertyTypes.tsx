@@ -10,38 +10,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 
-const propertyFeatures = [
-  {
-    id: "healthCare",
-    label: "Health Care",
-  },
-  {
-    id: "hotel",
-    label: "Hotel",
-  },
-  {
-    id: "office",
-    label: "Office",
-  },
-  {
-    id: "retail",
-    label: "Retail",
-  },
-  {
-    id: "openStorageLand",
-    label: "Open Storage Land",
-  },
-  {
-    id: "shoppingCenter",
-    label: "Shopping Center",
-  },
-  {
-    id: "other",
-    label: "Other",
-  },
-] as const;
-
-const CommericalPropertyTypes = ({ form }: { form: any }) => {
+const CommericalPropertyTypes = ({ form, filteredProperties }: { form: any; filteredProperties: { _id: string; name: string; amenities: any[] }[] }) => {
   const [showPropertyTypes, setShowPropertyTypes] = useState(false);
 
   return (
@@ -54,7 +23,7 @@ const CommericalPropertyTypes = ({ form }: { form: any }) => {
         }}
       >
         <FormLabel className="text-base cursor-pointer">
-          Commerical Property SubType
+          Commercial Property SubType
         </FormLabel>
         <button type="button" className="focus:outline-none">
           {showPropertyTypes ? (
@@ -68,7 +37,7 @@ const CommericalPropertyTypes = ({ form }: { form: any }) => {
       {showPropertyTypes && (
         <FormField
           control={form.control}
-          name="commericalSubType"
+          name="propertySubType"
           render={({ field }) => (
             <FormItem className="space-y-3">
               <FormControl>
@@ -77,16 +46,16 @@ const CommericalPropertyTypes = ({ form }: { form: any }) => {
                   defaultValue={field.value}
                   className="grid grid-cols-5 gap-4"
                 >
-                  {propertyFeatures.map((item) => (
+                  {filteredProperties.map((item) => (
                     <FormItem
-                      key={item.id}
+                      key={item._id}
                       className="flex items-center space-x-3 space-y-0"
                     >
                       <FormControl>
-                        <RadioGroupItem value={item.id} />
+                        <RadioGroupItem value={item._id} />
                       </FormControl>
                       <FormLabel className="text-sm font-normal">
-                        {item.label}
+                        {item.name}
                       </FormLabel>
                     </FormItem>
                   ))}
