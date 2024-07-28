@@ -9,6 +9,13 @@ export type User = {
   posts: string;
 };
 
+export type propertyTableType = {
+  id: number;
+  title: string;
+  type: string;
+  price: number;
+};
+
 export type Blog = {
   id: number;
   title: string;
@@ -41,6 +48,39 @@ export type Locations = {
   id: number;
   name: string;
 };
+
+export const properties: propertyTableType[] = [
+  {
+    id: 1,
+    title: "Property 1",
+    type: "Residential",
+    price: 100000,
+  },
+  {
+    id: 2,
+    title: "Property 2",
+    type: "Commercial",
+    price: 200000,
+  },
+  {
+    id: 3,
+    title: "Property 3",
+    type: "Residential",
+    price: 300000,
+  },
+  {
+    id: 4,
+    title: "Property 4",
+    type: "Commercial",
+    price: 400000,
+  },
+  {
+    id: 5,
+    title: "Property 5",
+    type: "Residential",
+    price: 500000,
+  },
+];
 
 export const blogs: Blog[] = [
   {

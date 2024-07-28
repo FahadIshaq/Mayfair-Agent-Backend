@@ -1,10 +1,10 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { User } from "@/constants/data";
+import { propertyTableType, User } from "@/constants/data";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<propertyTableType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -25,21 +25,18 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "NAME",
+    accessorKey: "title",
+    header: "TITLE",
   },
   {
-    accessorKey: "company",
-    header: "COMPANY",
+    accessorKey: "propertyType",
+    header: "TYPE",
   },
   {
-    accessorKey: "role",
-    header: "ROLE",
+    accessorKey: "propertyRent",
+    header: "RENT",
   },
-  {
-    accessorKey: "status",
-    header: "STATUS",
-  },
+
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
