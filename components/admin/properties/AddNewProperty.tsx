@@ -75,6 +75,7 @@ const formSchema = z.object({
     propertyLocation: z.string(),
   }),
   propertyRent: z.string().optional(),
+  propertyPrice: z.string().optional(),
   amenties: z.array(z.string()),
   propertyDescription: z.string(),
   facts: z.object({
@@ -150,6 +151,7 @@ const AddNewProperty = () => {
         propertyLocation: "",
       },
       propertyRent: undefined,
+      propertyPrice: undefined,
       amenties: [],
       propertyDescription: "",
       facts: {
@@ -235,7 +237,7 @@ const AddNewProperty = () => {
 
       if (key === 'propertyImages') {
         (value as ArrayBuffer[]).forEach((image, index) => {
-          formData.append(`propertyImages[${index}]`, new Blob([image]), `image${index}.jpg`);
+          formData.append(`propertyImages`, new Blob([image]), `image${index}.jpg`);
         });
       } else if (typeof value === 'object' && value !== null) {
         formData.append(key, JSON.stringify(value));
@@ -316,18 +318,35 @@ const AddNewProperty = () => {
           <PropertyAddress form={form} />
           <PropertyDetails form={form} />
 
-          <FormField
-            control={form.control}
-            name="propertyRent"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input type="number" label="Property Rent" placeholder="Property Rent" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {form.watch("propertyOption") === "rent" && (
+            <FormField
+              control={form.control}
+              name="propertyRent"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input type="number" label="Property Rent" placeholder="Property Rent" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {form.watch("propertyOption") === "buy" && (
+            <FormField
+              control={form.control}
+              name="propertyPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input type="number" label="Property Price" placeholder="Property Price" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <Amenties form={form} filteredProperties={filteredProperties} propertySubType={form.watch("propertySubType")} />
           <PropertyDescription form={form} />
