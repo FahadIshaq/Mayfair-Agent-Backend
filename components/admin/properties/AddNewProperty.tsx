@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import Input from "@/components/ui/Input";
 import PropertyAddress from "./PropertyAddress";
-import PropertyDetails from "./PropertyDetails";
+import PropertyDetail from "./PropertyDetail";
 import Amenties from "./Amenties";
 import PropertyDescription from "./PropertyDescription";
 import PrivateOffice from "./PrivateOffice";
@@ -74,8 +74,8 @@ const formSchema = z.object({
     desksMax: z.number().positive().int().optional(),
     propertyLocation: z.string(),
   }),
-  propertyRent: z.string().optional(),
-  propertyPrice: z.string().optional(),
+  propertyRent: z.preprocess((val) => Number(val), z.number().optional()),
+  propertyPrice: z.preprocess((val) => Number(val), z.number().optional()),
   amenties: z.array(z.string()),
   propertyDescription: z.string(),
   facts: z.object({
@@ -234,7 +234,7 @@ const AddNewProperty = () => {
   }, [form.watch("propertyType"), propertyTypes]);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true); // Set submitting to true
+    setIsSubmitting(true);
     const formData = new FormData();
     console.log(values);
 
@@ -337,7 +337,7 @@ const AddNewProperty = () => {
             )}
 
           <PropertyAddress form={form} />
-          <PropertyDetails form={form} />
+          <PropertyDetail form={form} />
 
           {form.watch("propertyOption") === "rent" && (
             <FormField
