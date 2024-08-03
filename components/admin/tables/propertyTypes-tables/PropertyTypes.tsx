@@ -10,7 +10,7 @@ import { Property } from "@/constants/data";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { getLocalStorageItem } from "@/lib/utils";
+import { getLocalStorageItem } from "@/lib/util";
 
 interface PropertyTypesProps {
   data: Property[];
