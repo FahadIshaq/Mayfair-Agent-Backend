@@ -1,12 +1,14 @@
 "use client";
-import { FormControl, FormLabel } from "@/components/ui/form";
+
 import { useState } from "react";
 
-import { ChevronDown, ChevronUp } from "lucide-react";
 import Input from "@/components/ui/Input";
 import { Separator } from "@/components/ui/separator";
+import { FormControl, FormLabel } from "@/components/ui/form";
 
-const PropertyDetails = ({ form }: { form: any }) => {
+import { ChevronDown, ChevronUp } from "lucide-react";
+
+const PropertyDetail = ({ form }: { form: any }) => {
   const [showPropertyDetails, setShowPropertyDetails] = useState(false);
 
   return (
@@ -53,6 +55,7 @@ const PropertyDetails = ({ form }: { form: any }) => {
               {...form.register("propertyDetails.endSize")}
             />
           </FormControl>
+
           {form.watch("type") === "commerical" &&
             form.watch("commericalSubType") === "office" && (
               <>
@@ -80,6 +83,7 @@ const PropertyDetails = ({ form }: { form: any }) => {
                 </FormControl>
               </>
             )}
+
           <FormControl>
             <Input
               label="Property Location"
@@ -93,4 +97,4 @@ const PropertyDetails = ({ form }: { form: any }) => {
   );
 };
 
-export default PropertyDetails;
+export default PropertyDetail;
