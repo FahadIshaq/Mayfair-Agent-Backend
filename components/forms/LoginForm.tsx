@@ -21,6 +21,7 @@ const LoginForm = () => {
       console.log(login);
       Cookies.set("token", login.data.token, { expires: 7, secure: true });
       localStorage.setItem("admin", login.data.token);
+      localStorage.setItem("adminData", JSON.stringify(login.data.user));
       router.push("/admin");
     } catch (error) {
       toast.error("error");

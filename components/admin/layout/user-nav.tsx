@@ -1,6 +1,9 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,27 +15,45 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 export function UserNav() {
+  const [adminData, setAdminData] = useState<{
+    firstName: string;
+    email: string;
+  } | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const data = localStorage.getItem("adminData");
+    if (data) {
+      setAdminData(JSON.parse(data));
+    }
+  }, []);
+
+  const username = adminData?.firstName || "User";
+  const email = adminData?.email || "user@example.com";
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin");
+    localStorage.removeItem("adminData");
+    Cookies.remove("token");
+    router.push("/adminLogin");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={"Q"}
-              alt={"Q"}
-            />
-            <AvatarFallback>Q</AvatarFallback>
+            <AvatarImage src={"A"} alt={"A"} />
+            <AvatarFallback>A</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              Qasim
-            </p>
+            <p className="text-sm font-medium leading-none">{username}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              qasim@gmail
+              {email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -53,7 +74,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
