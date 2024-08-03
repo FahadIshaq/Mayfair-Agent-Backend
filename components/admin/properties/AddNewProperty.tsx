@@ -121,8 +121,8 @@ const formSchema = z.object({
 const AddNewProperty = () => {
   const [propertyTypes, setPropertyTypes] = useState<{ _id: string; type: string; name: string; amenities: any[] }[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<{ _id: string; name: string; amenities: any[] }[]>([]);
-
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state variable
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -228,8 +228,10 @@ const AddNewProperty = () => {
     }
   }, [form.watch("propertyType"), propertyTypes]);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true); // Set submitting to true
     const formData = new FormData();
+    console.log(values)
 
     // Loop over the values and append them to the FormData object
     Object.keys(values).forEach(key => {
@@ -264,6 +266,8 @@ const AddNewProperty = () => {
     } catch (error) {
       console.error("An error occurred:", error);
       toast.error("Failed to add property.");
+    } finally {
+      setIsSubmitting(false); // Set submitting to false
     }
   }
 
@@ -278,7 +282,7 @@ const AddNewProperty = () => {
       <Separator />
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
           <FormField
             control={form.control}
             name="title"
@@ -357,8 +361,8 @@ const AddNewProperty = () => {
           <ImagesUpload form={form} />
 
           <div className="flex justify-end">
-            <Button type="submit" className="w-32">
-              Submit
+            <Button type="submit" className="w-32" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
           </div>
         </form>
