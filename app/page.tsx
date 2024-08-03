@@ -11,6 +11,12 @@ const Home = () => {
       </p>
       <div className="flex justify-center space-x-4">
         <Link
+          href="/adminLogin"
+          className="bg-black hover:bg-gray-600 text-white py-2 px-4 rounded-md"
+        >
+          Admin Login
+        </Link>
+        <Link
           href="/Contact"
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
         >
