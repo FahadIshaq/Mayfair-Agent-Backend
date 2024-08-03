@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import Input from "@/components/ui/Input";
 import PropertyAddress from "./PropertyAddress";
-import PropertyDetails from "./propertyDetails";
+import PropertyDetails from "./PropertyDetail";
 import Amenties from "./Amenties";
 import PropertyDescription from "./PropertyDescription";
 import PrivateOffice from "./PrivateOffice";
