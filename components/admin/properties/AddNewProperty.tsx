@@ -119,10 +119,15 @@ const formSchema = z.object({
 });
 
 const AddNewProperty = () => {
-  const [propertyTypes, setPropertyTypes] = useState<{ _id: string; type: string; name: string; amenities: any[] }[]>([]);
-  const [filteredProperties, setFilteredProperties] = useState<{ _id: string; name: string; amenities: any[] }[]>([]);
+  const [propertyTypes, setPropertyTypes] = useState<
+    { _id: string; type: string; name: string; amenities: any[] }[]
+  >([]);
+  const [filteredProperties, setFilteredProperties] = useState<
+    { _id: string; name: string; amenities: any[] }[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false); // New state variable
+  const token = localStorage.getItem("admin");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -202,7 +207,7 @@ const AddNewProperty = () => {
           `${process.env.NEXT_PUBLIC_API_URL}/propertyType`,
           {
             headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -231,17 +236,21 @@ const AddNewProperty = () => {
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true); // Set submitting to true
     const formData = new FormData();
-    console.log(values)
+    console.log(values);
 
     // Loop over the values and append them to the FormData object
-    Object.keys(values).forEach(key => {
+    Object.keys(values).forEach((key) => {
       const value = values[key as keyof typeof values];
 
-      if (key === 'propertyImages') {
+      if (key === "propertyImages") {
         (value as ArrayBuffer[]).forEach((image, index) => {
-          formData.append(`propertyImages`, new Blob([image]), `image${index}.jpg`);
+          formData.append(
+            `propertyImages`,
+            new Blob([image]),
+            `image${index}.jpg`
+          );
         });
-      } else if (typeof value === 'object' && value !== null) {
+      } else if (typeof value === "object" && value !== null) {
         formData.append(key, JSON.stringify(value));
       } else {
         formData.append(key, value as string | Blob);
@@ -254,8 +263,8 @@ const AddNewProperty = () => {
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -306,7 +315,10 @@ const AddNewProperty = () => {
           {form.watch("propertyType") &&
             form.watch("propertyType") === "residential" && (
               <>
-                <ResidentialPropertyTypes form={form} filteredProperties={filteredProperties} />
+                <ResidentialPropertyTypes
+                  form={form}
+                  filteredProperties={filteredProperties}
+                />
                 <ResidentialPropertyDetails form={form} />
               </>
             )}
@@ -314,8 +326,13 @@ const AddNewProperty = () => {
           {form.watch("propertyType") &&
             form.watch("propertyType") === "commercial" && (
               <>
-                <CommericalPropertyTypes form={form} filteredProperties={filteredProperties} />
-                {form.watch("commericalSubType") === "office" && <PrivateOffice form={form} />}
+                <CommericalPropertyTypes
+                  form={form}
+                  filteredProperties={filteredProperties}
+                />
+                {form.watch("commericalSubType") === "office" && (
+                  <PrivateOffice form={form} />
+                )}
               </>
             )}
 
@@ -329,7 +346,12 @@ const AddNewProperty = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="number" label="Property Rent" placeholder="Property Rent" {...field} />
+                    <Input
+                      type="number"
+                      label="Property Rent"
+                      placeholder="Property Rent"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -344,7 +366,12 @@ const AddNewProperty = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="number" label="Property Price" placeholder="Property Price" {...field} />
+                    <Input
+                      type="number"
+                      label="Property Price"
+                      placeholder="Property Price"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -352,7 +379,11 @@ const AddNewProperty = () => {
             />
           )}
 
-          <Amenties form={form} filteredProperties={filteredProperties} propertySubType={form.watch("propertySubType")} />
+          <Amenties
+            form={form}
+            filteredProperties={filteredProperties}
+            propertySubType={form.watch("propertySubType")}
+          />
           <PropertyDescription form={form} />
           <Facts form={form} />
           <Locations form={form} />

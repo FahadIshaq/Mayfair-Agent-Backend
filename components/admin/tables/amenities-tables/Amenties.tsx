@@ -25,6 +25,7 @@ export const Amenties: React.FC<AmenitiesClientProps> = ({ data }) => {
   const router = useRouter();
   const [amenitiesData, setAmenitiesData] = useState(null || data);
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("admin");
 
   const addAmenity = async (payload: string) => {
     try {
@@ -33,7 +34,7 @@ export const Amenties: React.FC<AmenitiesClientProps> = ({ data }) => {
         { name: payload },
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -54,7 +55,7 @@ export const Amenties: React.FC<AmenitiesClientProps> = ({ data }) => {
         `${process.env.NEXT_PUBLIC_API_URL}/amenities`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -64,7 +65,7 @@ export const Amenties: React.FC<AmenitiesClientProps> = ({ data }) => {
       console.error("An error occurred:", error);
       toast.error("Failed to fetch amenities.");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 

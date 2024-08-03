@@ -18,8 +18,8 @@ interface PropertyTypesProps {
 export const PropertyTypes: React.FC<PropertyTypesProps> = ({ data }) => {
   const router = useRouter();
   const [properties, setProperties] = useState(null || data);
-  const [loading, setLoading] = useState(false); 
-
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("admin");
   const fetchPropertyTypes = async () => {
     setLoading(true);
     try {
@@ -27,7 +27,7 @@ export const PropertyTypes: React.FC<PropertyTypesProps> = ({ data }) => {
         `${process.env.NEXT_PUBLIC_API_URL}/propertyType`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -49,7 +49,7 @@ export const PropertyTypes: React.FC<PropertyTypesProps> = ({ data }) => {
         payload,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_AUTH_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -80,7 +80,7 @@ export const PropertyTypes: React.FC<PropertyTypesProps> = ({ data }) => {
       </div>
       <Separator />
       {loading ? (
-        <div>Loading...</div> 
+        <div>Loading...</div>
       ) : (
         <DataTable searchKey="name" columns={columns} data={properties} />
       )}

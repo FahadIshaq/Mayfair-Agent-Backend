@@ -1,4 +1,5 @@
 import apiService from "../apiService";
+import axios from "axios";
 
 export const registerUserApi = async (userData: any) => {
   try {
@@ -12,7 +13,7 @@ export const registerUserApi = async (userData: any) => {
 
 export const loginUserApi = async (userData: any) => {
   try {
-    const data = await apiService.request("/login", "POST", userData);
+    const data = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, userData);
     return data;
   } catch (error: any) {
     console.log(error.message);

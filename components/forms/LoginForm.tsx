@@ -16,20 +16,14 @@ const LoginForm = () => {
   } = useForm();
 
   const onSubmit = async (data: any) => {
-    let login = { success: true, message: "", token: "", user: {} };
     try {
-      login = await loginUserApi(data);
+      const login = await loginUserApi(data);
       console.log(login);
-      if (login.success) {
-        toast.success(login.message);
-        Cookies.set("token", login.token, { expires: 7, secure: true });
-        localStorage.setItem("victor-harris-user", JSON.stringify(login.user));
-        router.push("/");
-      } else {
-        toast.error(login.message);
-      }
+      Cookies.set("token", login.data.token, { expires: 7, secure: true });
+      localStorage.setItem("admin", login.data.token);
+      router.push("/admin");
     } catch (error) {
-      toast.error(login.message);
+      toast.error("error");
     }
   };
 
