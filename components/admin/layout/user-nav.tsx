@@ -14,6 +14,9 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getLocalStorageItem } from "@/lib/util";
+import { removeLocalStorageItems } from "@/lib/util";
+
 export function UserNav() {
   const [adminData, setAdminData] = useState<{
     firstName: string;
@@ -22,7 +25,7 @@ export function UserNav() {
   const router = useRouter();
 
   useEffect(() => {
-    const data = localStorage.getItem("adminData");
+    const data = getLocalStorageItem("adminData");
     if (data) {
       setAdminData(JSON.parse(data));
     }
@@ -32,8 +35,8 @@ export function UserNav() {
   const email = adminData?.email || "user@example.com";
 
   const handleLogout = () => {
-    localStorage.removeItem("admin");
-    localStorage.removeItem("adminData");
+    removeLocalStorageItems("admin");
+    removeLocalStorageItems("adminData");
     Cookies.remove("token");
     router.push("/adminLogin");
   };

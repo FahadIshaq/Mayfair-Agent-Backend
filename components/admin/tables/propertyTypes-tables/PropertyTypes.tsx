@@ -10,6 +10,7 @@ import { Property } from "@/constants/data";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getLocalStorageItem } from "@/lib/utils";
 
 interface PropertyTypesProps {
   data: Property[];
@@ -19,7 +20,8 @@ export const PropertyTypes: React.FC<PropertyTypesProps> = ({ data }) => {
   const router = useRouter();
   const [properties, setProperties] = useState(null || data);
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("admin");
+  const token = getLocalStorageItem("admin");
+
   const fetchPropertyTypes = async () => {
     setLoading(true);
     try {

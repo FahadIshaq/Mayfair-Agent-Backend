@@ -16,6 +16,7 @@ import { Modal } from "./Modal";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getLocalStorageItem } from "@/lib/util";
 
 interface AmenitiesClientProps {
   data: Amenities[];
@@ -25,7 +26,7 @@ export const Amenties: React.FC<AmenitiesClientProps> = ({ data }) => {
   const router = useRouter();
   const [amenitiesData, setAmenitiesData] = useState(null || data);
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("admin");
+  const token = getLocalStorageItem("admin");
 
   const addAmenity = async (payload: string) => {
     try {

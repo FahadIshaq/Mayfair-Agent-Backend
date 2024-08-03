@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import Input from "@/components/ui/Input";
 import PropertyAddress from "./PropertyAddress";
-import PropertyDetails from "./PropertyDetails";
+import PropertyDetails from "./propertyDetails";
 import Amenties from "./Amenties";
 import PropertyDescription from "./PropertyDescription";
 import PrivateOffice from "./PrivateOffice";
@@ -30,6 +30,7 @@ import ResidentialPropertyTypes from "./ResidentialPropertyTypes";
 import CommericalPropertyTypes from "./CommericalPropertyTypes";
 import ResidentialPropertyDetails from "./ResidentialPropertyDetails";
 import PropertyOption from "./PropertyOption";
+import { getLocalStorageItem } from "@/lib/util";
 
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -127,7 +128,7 @@ const AddNewProperty = () => {
   >([]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false); // New state variable
-  const token = localStorage.getItem("admin");
+  const token = getLocalStorageItem("admin");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

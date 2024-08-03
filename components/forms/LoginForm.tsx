@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input";
 import { loginUserApi } from "@/api/auth/authApi";
+import { setLocalStorageItem } from "@/lib/util";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -19,10 +20,12 @@ const LoginForm = () => {
     try {
       const login = await loginUserApi(data);
       console.log(login);
-      Cookies.set("token", login.data.token, { expires: 7, secure: true });
-      localStorage.setItem("admin", login.data.token);
-      localStorage.setItem("adminData", JSON.stringify(login.data.user));
-      router.push("/admin");
+      if (login?.data) {
+        Cookies.set("token", login.data.token, { expires: 7, secure: true });
+        setLocalStorageItem("admin", login.data.token);
+        setLocalStorageItem("adminData", JSON.stringify(login.data.user));
+        router.push("/admin");
+      }
     } catch (error) {
       toast.error("error");
     }
