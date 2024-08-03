@@ -126,7 +126,7 @@ const AddNewProperty = () => {
     { _id: string; name: string; amenities: any[] }[]
   >([]);
   const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false); // New state variable
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const token = localStorage.getItem("admin");
 
   const form = useForm<z.infer<typeof formSchema>>({
