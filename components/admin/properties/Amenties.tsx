@@ -7,19 +7,30 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
-const Amenties = ({ form, filteredProperties, propertySubType }: { form: any; filteredProperties: { _id: string; name: string; amenities: any[] }[], propertySubType: string | undefined }) => {
+const Amenties = ({
+  form,
+  filteredProperties,
+  propertySubType,
+}: {
+  form: any;
+  filteredProperties: { _id: string; name: string; amenities: any[] }[];
+  propertySubType: string | undefined;
+}) => {
   const [showAmenties, setShowAmenties] = useState(false);
-  const [amenities, setAmenities] = useState<{ _id: string; name: string }[]>([]);
+  const [amenities, setAmenities] = useState<{ _id: string; name: string }[]>(
+    []
+  );
 
   useEffect(() => {
     if (propertySubType) {
-      const selectedProperty = filteredProperties.find(property => property._id === propertySubType);
+      const selectedProperty = filteredProperties.find(
+        (property) => property._id === propertySubType
+      );
       setAmenities(selectedProperty ? selectedProperty.amenities : []);
     }
   }, [propertySubType, filteredProperties]);

@@ -156,8 +156,8 @@ const AddNewProperty = () => {
         desksMax: undefined,
         propertyLocation: "",
       },
-      propertyRent: undefined,
-      propertyPrice: undefined,
+      propertyRent: 0,
+      propertyPrice: 0,
       amenties: [],
       propertyDescription: "",
       facts: {
@@ -393,7 +393,7 @@ const AddNewProperty = () => {
           <ImagesUpload form={form} />
 
           <div className="flex justify-end">
-            <Button type="submit" className="w-32" disabled={isSubmitting}>
+            <Button type="button" onClick={() => form.handleSubmit(handleSubmit)()} className="w-32" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
           </div>
