@@ -64,7 +64,7 @@ const formSchema = z.object({
     street: z.string(),
     city: z.string(),
     state: z.string(),
-    zip: z.string(),
+    zip: z.preprocess((val) => Number(val), z.number()),
     location: z.string(),
   }),
   propertyDetails: z.object({
@@ -127,7 +127,7 @@ const AddNewProperty = () => {
     { _id: string; name: string; amenities: any[] }[]
   >([]);
   const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false); // New state variable
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const token = getLocalStorageItem("admin");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -238,6 +238,12 @@ const AddNewProperty = () => {
     setIsSubmitting(true);
     const formData = new FormData();
     console.log(values);
+
+    if (values.propertyOption === "rent") {
+      delete values.propertyPrice;
+    } else if (values.propertyOption === "buy") {
+      delete values.propertyRent;
+    }
 
     // Loop over the values and append them to the FormData object
     Object.keys(values).forEach((key) => {
@@ -393,7 +399,12 @@ const AddNewProperty = () => {
           <ImagesUpload form={form} />
 
           <div className="flex justify-end">
-            <Button type="button" onClick={() => form.handleSubmit(handleSubmit)()} className="w-32" disabled={isSubmitting}>
+            <Button
+              type="button"
+              onClick={() => form.handleSubmit(handleSubmit)()}
+              className="w-32"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
           </div>
