@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
-const ImagesUpload = ({ form }: { form: any }) => {
+const ImagesUpload = ({ form, uploadedFiles, setUploadedFiles }: { form: any, uploadedFiles: File[], setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>> }) => {
   const [showUpload, setShowUpload] = useState(false);
   return (
     <div className="space-y-4">
@@ -45,6 +45,8 @@ const ImagesUpload = ({ form }: { form: any }) => {
                   <ImageUpload
                     fileBuffers={field.value}
                     setFileBuffers={field.onChange}
+                    uploadedFiles={uploadedFiles}
+                    setUploadedFiles={setUploadedFiles}
                   />
                 </FormControl>
               </FormItem>

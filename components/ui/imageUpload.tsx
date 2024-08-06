@@ -5,12 +5,14 @@ import Input from "./Input";
 export default function ImageUpload({
   fileBuffers,
   setFileBuffers,
+  uploadedFiles,
+  setUploadedFiles,
 }: {
   fileBuffers: ArrayBuffer[];
   setFileBuffers: React.Dispatch<React.SetStateAction<ArrayBuffer[]>>;
+  uploadedFiles: File[];
+  setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }) {
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-
   const onDrop = (acceptedFiles: File[]) => {
     setUploadedFiles((prevUploadedFiles) => [
       ...prevUploadedFiles,

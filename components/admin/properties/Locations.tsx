@@ -8,7 +8,6 @@ import {
 import { useState } from "react";
 
 import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
 import Input from "@/components/ui/Input";
 import { useFieldArray } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -55,16 +54,6 @@ const Locations = ({ form }: { form: any }) => {
       <Separator />
       {showLocations && (
         <div className="space-y-4 ml-4">
-          <div className="space-y-4">
-            <FormControl>
-              <Input
-                label="Location Iframe"
-                placeholder="Location Iframe"
-                {...form.register("location.locationIframe")}
-              />
-            </FormControl>
-          </div>
-
           <div className="space-y-4">
             <FormControl>
               <Input

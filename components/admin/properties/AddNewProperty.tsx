@@ -84,7 +84,6 @@ const formSchema = z.object({
     description: z.string(),
   }),
   location: z.object({
-    locationIframe: z.string(),
     latitude: z.string(),
     longitude: z.string(),
     transportOptions: z.array(
@@ -120,14 +119,11 @@ const formSchema = z.object({
 });
 
 const AddNewProperty = () => {
-  const [propertyTypes, setPropertyTypes] = useState<
-    { _id: string; type: string; name: string; amenities: any[] }[]
-  >([]);
-  const [filteredProperties, setFilteredProperties] = useState<
-    { _id: string; name: string; amenities: any[] }[]
-  >([]);
+  const [propertyTypes, setPropertyTypes] = useState<{ _id: string; type: string; name: string; amenities: any[] }[]>([]);
+  const [filteredProperties, setFilteredProperties] = useState<{ _id: string; name: string; amenities: any[] }[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const token = getLocalStorageItem("admin");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -165,7 +161,6 @@ const AddNewProperty = () => {
         description: "",
       },
       location: {
-        locationIframe: "",
         latitude: "",
         longitude: "",
         transportOptions: [
@@ -237,7 +232,6 @@ const AddNewProperty = () => {
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     const formData = new FormData();
-    console.log(values);
 
     if (values.propertyOption === "rent") {
       delete values.propertyPrice;
@@ -277,8 +271,9 @@ const AddNewProperty = () => {
       );
 
       toast.success("Property added successfully!");
-
       form.reset(); // Reset form to default values
+      setUploadedFiles([]); // Clear uploaded files
+
     } catch (error) {
       console.error("An error occurred:", error);
       toast.error("Failed to add property.");
@@ -396,7 +391,7 @@ const AddNewProperty = () => {
           <Locations form={form} />
           <SpecialLocations form={form} />
 
-          <ImagesUpload form={form} />
+          <ImagesUpload form={form} uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
 
           <div className="flex justify-end">
             <Button
